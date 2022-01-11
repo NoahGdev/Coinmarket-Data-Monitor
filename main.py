@@ -5,9 +5,6 @@ from discord_webhook import DiscordWebhook, DiscordEmbed
 import time
 
 def main():
-    with open('logs.txt', 'r') as f:
-            myNames = [line.strip() for line in f]
-
     url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
 
     parameters = {
@@ -46,7 +43,7 @@ def main():
             r = f.read().splitlines()
             f.write(f'{price}\n')
         webhook = DiscordWebhook(
-        url= 'https://discord.com/api/webhooks/913623876855005184/0QrJLPOJeb95fhnJh2yO9IeVZpD1qC9E--KF0a-gbsXSyFj18aOeIEseEyNJXNPbApgc',
+        url= 'your webhook',
         username="Crypto Monitor",
         content="New Price Detected",
         )
