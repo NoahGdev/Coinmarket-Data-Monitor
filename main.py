@@ -5,10 +5,14 @@ from discord_webhook import DiscordWebhook, DiscordEmbed
 import time
 
 def main():
+    
+    with open('logs.txt', 'r+') as f:
+        r = f.read().splitlines()
+            
     url = 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest'
 
     parameters = {
-      'slug':'hector-dao',
+      'slug':'hector-dao', ## Find any slug in docs
       'convert':'GBP'
     }
     headers = {
@@ -22,7 +26,8 @@ def main():
     try:
       response = session.get(url, params=parameters)
       data = json.loads(response.text)
-
+        
+      ## The details may be different and you will have to manipulate the json differently
       price = str(data['data']['13881']['quote']['GBP']['price'])[:9]
       tokenAddy = data['data']['13881']['platform']['token_address']
       onedayChange = data['data']['13881']['quote']['GBP']['percent_change_24h']
@@ -30,15 +35,20 @@ def main():
     except (ConnectionError, Timeout, TooManyRedirects) as e:
       print(e)
       time.sleep(100)
+        
+    with open('logs.txt', 'r+') as f:
+        r = f.read().splitlines()
 
     if price == r[-1]:
         #print('Price is still same...')
         pass
     else:
         print('New Price Found')
+        # Adds the price to the logs so that it wont send webhook again if it the same price
         with open('logs.txt', 'r+') as f:
             r = f.read().splitlines()
             f.write(f'{price}\n')
+            
         webhook = DiscordWebhook(
         url= 'your webhook',
         username="Crypto Monitor",
