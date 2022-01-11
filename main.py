@@ -1,4 +1,4 @@
-from requests import Request, Session
+import requests
 from requests.exceptions import ConnectionError, Timeout, TooManyRedirects
 import json
 from discord_webhook import DiscordWebhook, DiscordEmbed
@@ -16,7 +16,7 @@ def main():
       'X-CMC_PRO_API_KEY': 'your_api_key',
     }
 
-    session = Session()
+    session = requests.Session()
     session.headers.update(headers)
 
     try:
@@ -30,9 +30,6 @@ def main():
     except (ConnectionError, Timeout, TooManyRedirects) as e:
       print(e)
       time.sleep(100)
-
-    with open('logs.txt') as f:
-        r = f.read().splitlines()
 
     if price == r[-1]:
         #print('Price is still same...')
@@ -71,5 +68,5 @@ def main():
 
 if __name__ == "__main__":
     main()
-    time.sleep(600)
+    time.sleep(600) ## You can change this to however long you want
     print('Slept 10 minutes')
